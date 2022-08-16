@@ -6,18 +6,13 @@ namespace Scripts.Infrastructure
     internal class Game
     {
         public static IInputService inputService;
+        public GameStateMachine stateMachine;
 
         public Game()
         {
-            RegisterInputService();
+            stateMachine = new GameStateMachine();
         }
 
-        private static void RegisterInputService()
-        {
-            if (Application.isEditor)
-                inputService = new StandaloneInputService();
-            else
-                inputService = new MobileInputService();
-        }
+        
     }
 }
