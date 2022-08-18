@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Scripts.Logic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,15 +9,17 @@ namespace Scripts.Infrastructure
 {
     public class GameStateMachine
     {
-        private readonly Dictionary<Type, IState> _states;
-        private IState _activeState;
+        private readonly Dictionary<Type, IExitableState> _states;
+        private IExitableState _activeState;
 
-        public GameStateMachine()
+        public GameStateMachine(SceneLoader sceneLoader, LoadingCurtain curtain)
         {
-            _states = new Dictionary<Type, IState>();
-            _states.Add(typeof(BootstrapState), new BootstrapState(this));
+            _states = new Dictionary<Type, IExitableState>();
+            _states.Add(typeof(BootstrapState), new BootstrapState(this, sceneLoader));
+            _states.Add(typeof(LoadLevelState), new LoadLevelState(this, sceneLoader, curtain));
+            _states.Add(typeof(GameLoopState), new GameLoopState(this));
         }
-        public void Enter<TState>() where TState : IState
+        public void Enter<TState>() where TState : class, IState
         {
             //нам нужно знать текущее состояние(загрузка, игровой цикл, выход из игры)
             //у каждого состояния есть вход и выход
@@ -25,11 +28,18 @@ namespace Scripts.Infrastructure
             _activeState?.Exit();
 
             //входим в новое состояние
-            IState state = _states[typeof(TState)];
+            IState state = GetState<TState>();
             _activeState = state;
             state.Enter();
         }
-        
+        public void Enter<TState, TPayload>(TPayload payload) where TState : class, IPayloadedState<TPayload>
+        {
+            _activeState?.Exit();
+            IPayloadedState<TPayload> state = GetState<TState>();
+            _activeState = state;
+            state.Enter(payload);
+        }
+        private TState GetState<TState>() where TState : class, IExitableState => 
+            _states[typeof(TState)] as TState;
     }
-
 }

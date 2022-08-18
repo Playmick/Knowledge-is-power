@@ -1,7 +1,6 @@
 using UnityEngine;
 using Scripts.Infrastructure;
 using Scripts.Services.Input;
-using Scripts.CameraLogic;
 
 namespace Scripts.Hero
 {
@@ -18,7 +17,6 @@ namespace Scripts.Hero
         {
             _camera = Camera.main;
             _inputService = Game.inputService;
-            CameraFollow();
         }
 
         private void Update()
@@ -38,11 +36,6 @@ namespace Scripts.Hero
 
             _characterController.Move(_movementSpeed * _movementVector * Time.deltaTime);
         }
-
-        private void CameraFollow() => 
-            _camera.GetComponent<CameraFollow>().Follow(gameObject);
-
-        
     }
 }
 

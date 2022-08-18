@@ -1,4 +1,5 @@
-﻿using Scripts.Services.Input;
+﻿using Scripts.Logic;
+using Scripts.Services.Input;
 using UnityEngine;
 
 namespace Scripts.Infrastructure
@@ -8,9 +9,9 @@ namespace Scripts.Infrastructure
         public static IInputService inputService;
         public GameStateMachine stateMachine;
 
-        public Game()
+        public Game(ICoroutineRunner coroutineRunner, LoadingCurtain curtain)
         {
-            stateMachine = new GameStateMachine();
+            stateMachine = new GameStateMachine(new SceneLoader(coroutineRunner), curtain);
         }
 
         
