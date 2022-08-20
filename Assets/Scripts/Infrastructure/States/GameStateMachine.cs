@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Scripts.Infrastructure
+namespace Scripts.Infrastructure.States
 {
     public class GameStateMachine
     {
@@ -15,7 +15,7 @@ namespace Scripts.Infrastructure
         public GameStateMachine(SceneLoader sceneLoader, LoadingCurtain curtain)
         {
             _states = new Dictionary<Type, IExitableState>();
-            _states.Add(typeof(BootstrapState), new BootstrapState(this, sceneLoader));
+            _states.Add(typeof(BootState), new BootState(this, sceneLoader));
             _states.Add(typeof(LoadLevelState), new LoadLevelState(this, sceneLoader, curtain));
             _states.Add(typeof(GameLoopState), new GameLoopState(this));
         }

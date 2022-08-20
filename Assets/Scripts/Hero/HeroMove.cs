@@ -1,10 +1,12 @@
 using UnityEngine;
-using Scripts.Infrastructure;
 using Scripts.Services.Input;
+using Scripts.Infrastructure.Services;
+using Scripts.Data;
+using Scripts.Services.PersistentProgress;
 
 namespace Scripts.Hero
 {
-    public class HeroMove : MonoBehaviour
+    public class HeroMove : MonoBehaviour, ISavedProgress
     {
         [SerializeField] private CharacterController _characterController;
         [SerializeField] private float _movementSpeed;
@@ -13,10 +15,19 @@ namespace Scripts.Hero
 
         private Vector3 _movementVector;
 
+        public void LoadProgress(PlayerProgress progress)
+        {
+        }
+
+        public void UpdateProgress(PlayerProgress progress)
+        {
+            progress.worldData.position = transform.position;
+        }
+
         private void Start()
         {
             _camera = Camera.main;
-            _inputService = Game.inputService;
+            _inputService = ServicesBase.instance.GetService<IInputService>();
         }
 
         private void Update()

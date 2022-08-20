@@ -1,4 +1,5 @@
-﻿using Scripts.Logic;
+﻿using Scripts.Infrastructure.States;
+using Scripts.Logic;
 using Scripts.Services.Input;
 using UnityEngine;
 
@@ -6,7 +7,6 @@ namespace Scripts.Infrastructure
 {
     internal class Game
     {
-        public static IInputService inputService;
         public GameStateMachine stateMachine;
 
         public Game(ICoroutineRunner coroutineRunner, LoadingCurtain curtain)

@@ -1,3 +1,4 @@
+using Scripts.Infrastructure.States;
 using Scripts.Logic;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace Scripts.Infrastructure
         private void Awake()
         {
             _game = new Game(this, curtain);
-            _game.stateMachine.Enter<BootstrapState>();
+            _game.stateMachine.Enter<BootState>();
 
             DontDestroyOnLoad(this);
         }
